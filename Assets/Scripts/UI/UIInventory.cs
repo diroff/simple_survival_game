@@ -1,10 +1,15 @@
+using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
 public class UIInventory : MonoBehaviour
 {
     [SerializeField] private PlayerInventory inventoryTester;
+    [SerializeField] private UIInventorySlot _uiInventorySlotPrefab;
+    [SerializeField] private GridLayoutGroup _gridLayoutGroup;
 
     [SerializeField] private GameObject _inventory;
     [SerializeField] private GameObject _descriptionPanel;
@@ -31,9 +36,25 @@ public class UIInventory : MonoBehaviour
         RefreshItemDescriptionPanel();
     }
 
-    private void Awake()
+    public void CreateInventoryUI()
     {
+        for (int i = 0; i < inventory.capacity; i++)
+        {
+            Instantiate(_uiInventorySlotPrefab, transform);
+        }
+
         uiSlots = GetComponentsInChildren<UIInventorySlot>();
+
+        StartCoroutine(GridSorting());
+    }
+
+    private IEnumerator GridSorting()
+    {
+        _gridLayoutGroup.enabled = true;
+
+        yield return new WaitForEndOfFrame();
+
+        _gridLayoutGroup.enabled = false;
     }
 
     private void OnEnable()

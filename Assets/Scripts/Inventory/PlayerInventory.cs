@@ -17,12 +17,12 @@ public class PlayerInventory : MonoBehaviour
         inventory = new InventoryWithSlots(_capacity);
         inventory.OnInventoryStateChangedEvent += OnInventoryStateChanged;
 
+        uiInventory.CreateInventoryUI();
+
         _uiSlots = uiInventory.uiSlots;
         FillSlots();
 
         Player = GetComponent<Player>();
-
-        _inventory.SetActive(false);
     }
 
     public void FillSlots()
