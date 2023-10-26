@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e1153d9a10b7f40b38fc6b5db4f47f, type: 3}
+  m_Name: PigFoot
+  m_EditorClassIdentifier: 
+  _id: pig cooked foot
+  _title: Pig cooked foot
+  _description: Ugly foot of ugly pig. Not tasty
+  _itemType: 0
+  _canUsed: 1
+  _maxItemsInInventorySlot: 16
+  _icon: {fileID: 8468823292800697166, guid: eb12f7bfac0d77046905ee79ff5c9e44, type: 3}
