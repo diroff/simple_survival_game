@@ -15,7 +15,10 @@ MonoBehaviour:
   _id: 9.18
   _title: 9x18 ammo
   _description: Ammo for PM and others
+  _itemType: 2
+  _canUsed: 0
+  _canEquipped: 0
   _maxItemsInInventorySlot: 15
   _icon: {fileID: 21300000, guid: 9dfe78991acefa248a1245f48ed4c9c2, type: 3}
-  _itemType: 2
   _damage: 1
+  _lifeTime: 1.2

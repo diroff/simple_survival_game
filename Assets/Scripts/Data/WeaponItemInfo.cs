@@ -6,12 +6,14 @@ public class WeaponItemInfo : InventoryItemInfo
     [SerializeField] private int _damage;
     [SerializeField] private int _magazineCapacity;
     [SerializeField] private float _delay;
+    [SerializeField] private float _shootingPower;
     [SerializeField] private AmmoItemInfo _ammo;
     [SerializeField] private Sprite _sprite;
 
     public int Damage => _damage;
     public int MagazineCapacity => _magazineCapacity;
     public float Delay => _delay;
+    public float ShootingPower => _shootingPower;
     public AmmoItemInfo Ammo => _ammo;
     public Sprite Sprite => _sprite;
 }

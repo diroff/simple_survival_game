@@ -54,10 +54,10 @@ public class Weapon : MonoBehaviour
         if (_weaponItemInfo == null)
             return;
 
-        if (_timeFromLastShoot < _weaponItemInfo.Delay)
+        if (!ShootingDelayOver())
             return;
 
-        if (_bulletCount <= 0)
+        if (IsMagazineEmpty())
         {
             Debug.Log("Empty magazine!");
             return;
@@ -66,10 +66,35 @@ public class Weapon : MonoBehaviour
         _timeFromLastShoot = 0f;
         _bulletCount--;
 
-        var bullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.transform.position, Quaternion.identity);
-        bullet.Move(direction);
+        BulletPreparing(direction);
 
         Debug.Log("Ammo:" + _bulletCount + "/" + _weaponItemInfo.MagazineCapacity);
+    }
+
+    private void BulletPreparing(Vector3 direction)
+    {
+        var bullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.transform.position, Quaternion.identity);
+        bullet.SetDamage(_weaponItemInfo.Damage);
+        bullet.SetPower(_weaponItemInfo.ShootingPower);
+        bullet.SetAmmoInfo(_weaponItemInfo.Ammo);
+        bullet.SetupAmmoInfo();
+
+        bullet.Move(direction);
+    }
+
+    private bool ShootingDelayOver()
+    {
+        return _timeFromLastShoot >= _weaponItemInfo.Delay;
+    }
+
+    private bool IsMagazineEmpty()
+    {
+        return _bulletCount <= 0;
+    }
+
+    private bool IsMagazineFull()
+    {
+        return _bulletCount == _weaponItemInfo.MagazineCapacity;
     }
 
     public void Reload()
@@ -77,7 +102,7 @@ public class Weapon : MonoBehaviour
         if (_weaponItemInfo == null)
             return;
 
-        if (_bulletCount == _weaponItemInfo.MagazineCapacity)
+        if (IsMagazineFull())
         {
             Debug.Log("Magazine is full");
             return;

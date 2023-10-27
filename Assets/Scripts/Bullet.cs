@@ -1,21 +1,45 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float _power;
-    [SerializeField] private int _damage;
-    [SerializeField] private float _lifeTime;
     [SerializeField] private Collider2D _collider;
 
+    private AmmoItemInfo _ammoInfo;
+
+    private int _damage;
+
+    private float _lifeTime;
+    private float _power;
     private float _timeToDestroying = 0f;
+
     private Rigidbody2D _rigidbody;
     private HealthComponent _healthComponent;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+    }
+
+    public void SetupAmmoInfo()
+    {
+        _lifeTime = _ammoInfo.LifeTime;
+        _damage += _ammoInfo.Damage;
+    }
+
+    public void SetAmmoInfo(AmmoItemInfo info)
+    {
+        _ammoInfo = info;
+    }
+
+    public void SetDamage(int damage)
+    {
+        _damage = damage;
+    }
+
+    public void SetPower(float power)
+    {
+        _power = power;
     }
 
     private void Update()

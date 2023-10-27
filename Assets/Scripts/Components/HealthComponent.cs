@@ -10,6 +10,8 @@ public class HealthComponent : MonoBehaviour
     [SerializeField] private UnityEvent _onDie;
     [SerializeField] private HealthChangeEvent _onChange;
 
+    public int Health => _health;
+
     public void ModifyHealth(int healthDelta)
     {
         _health += healthDelta;
