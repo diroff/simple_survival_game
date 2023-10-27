@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(HealthComponent))]
 public class Creature : MonoBehaviour
 {
     [Header("Movement")]
@@ -20,10 +20,12 @@ public class Creature : MonoBehaviour
     protected bool NormalSprite = true;
 
     protected Rigidbody2D Rigidbody;
+    protected HealthComponent HealthComponent;
 
     protected virtual void Awake()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
+        HealthComponent = GetComponent<HealthComponent>();
     }
 
     protected virtual void Update()
@@ -43,6 +45,11 @@ public class Creature : MonoBehaviour
     public virtual void Die()
     {
         Debug.Log(this.gameObject + ":was dead");
+    }
+
+    public virtual void TakeDamage(int value)
+    {
+        HealthComponent.ModifyHealth(value);
     }
 
     protected void ChangeSpriteDirection()

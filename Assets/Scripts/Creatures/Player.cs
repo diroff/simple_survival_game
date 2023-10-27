@@ -12,7 +12,10 @@ public class Player : Creature
         GetInput();
 
         if (_weapon != null && Input.GetKeyDown(KeyCode.Space))
-            _weapon.Shoot();
+        {
+            Vector3 direction = NormalSprite? Vector3.right : Vector3.left;
+            _weapon.Shoot(direction);
+        }
 
         if (Input.GetKeyDown(KeyCode.R))
             _weapon.Reload();
@@ -26,6 +29,11 @@ public class Player : Creature
     public bool AddItem(object sender, IInventoryItem item)
     {
         return _inventory.inventory.TryToAdd(sender, item);
+    }
+
+    public override void TakeDamage(int value)
+    {
+        base.TakeDamage(value);
     }
 
     public void UseItem(IInventoryItem item)

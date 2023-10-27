@@ -1,10 +1,12 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _weaponSprite;
     [SerializeField] private PlayerInventory _playerInventory;
+
+    [SerializeField] private Bullet _bulletPrefab;
+    [SerializeField] private GameObject _bulletSpawnPoint;
 
     private WeaponItemInfo _weaponItemInfo;
     private IInventoryItem _weaponItemData;
@@ -47,7 +49,7 @@ public class Weapon : MonoBehaviour
         _timeFromLastShoot = _weaponItemInfo.Delay;
     }
 
-    public void Shoot()
+    public void Shoot(Vector3 direction)
     {
         if (_weaponItemInfo == null)
             return;
@@ -64,7 +66,9 @@ public class Weapon : MonoBehaviour
         _timeFromLastShoot = 0f;
         _bulletCount--;
 
-        Debug.Log("Pew from " + _weaponItemInfo.title);
+        var bullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.transform.position, Quaternion.identity);
+        bullet.Move(direction);
+
         Debug.Log("Ammo:" + _bulletCount + "/" + _weaponItemInfo.MagazineCapacity);
     }
 
