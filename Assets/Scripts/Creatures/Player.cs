@@ -17,7 +17,7 @@ public class Player : Creature
         base.Update();
         GetInput();
 
-        if(_equippedItem.ItemData.info != null && Input.GetKeyDown(KeyCode.Space))
+        if(_equippedItem != null && Input.GetKeyDown(KeyCode.Space))
         {
             UseItem(_equippedItem.ItemData);
         }
@@ -45,8 +45,11 @@ public class Player : Creature
     {
         _useEquippedItem(item);
 
+        if (item.info == null)
+            return;
+
         if(item.state.amount <= 0)
-            UnequipItem(item);
+            UnequipItem();
     }
 
     private void Heal(IInventoryItem item)
@@ -84,12 +87,15 @@ public class Player : Creature
 
     public void EquipItem(IInventoryItem item)
     {
+        _equippedItem.gameObject.SetActive(true);
+
         if (_equippedItem.ItemData.info != null)
         {
             _inventory.UnequipItem(_equippedItem.ItemData);
-            UnequipItem(item);
+            UnequipItem();
         }
 
+        _equippedItem.gameObject.SetActive(true);
         _equippedItem.SetItem(item);
 
         switch (item.info.type)
@@ -109,14 +115,14 @@ public class Player : Creature
         }
     }
 
-    public void UnequipItem(IInventoryItem item)
+    public void UnequipItem()
     {
         if (_weapon.isActiveAndEnabled)
             UnequipWeapon();
 
         _equippedItem.SetItem(null);
         _useEquippedItem = UseNothing;
-        Debug.Log("Item was unequipped");
+        _equippedItem.gameObject.SetActive(false);
     }
 
     private void UnequipWeapon()

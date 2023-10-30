@@ -968,7 +968,6 @@ MonoBehaviour:
     isItemEquipped: 0
   _weaponSprite: {fileID: 245183632}
   _playerInventory: {fileID: 2066843733}
-  _bulletPrefab: {fileID: 8182512724218301388, guid: 9ab0e13b212fcb749b9ab9e81aaddf51, type: 3}
   _bulletSpawnPoint: {fileID: 1446064426}
 --- !u!1 &252438296
 GameObject:
@@ -1894,7 +1893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &715503909
 MonoBehaviour:
   m_ObjectHideFlags: 0

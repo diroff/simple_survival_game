@@ -60,7 +60,7 @@ public class PlayerInventory : MonoBehaviour
     public void UnequipItem(IInventoryItem item)
     {
         inventory.UnequipItem(this, item);
-        Player.UnequipItem(item);
+        Player.UnequipItem();
     }
 
     private void OnInventoryStateChanged(object sender)

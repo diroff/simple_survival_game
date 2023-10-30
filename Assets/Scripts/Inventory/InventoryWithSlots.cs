@@ -289,7 +289,7 @@ public class InventoryWithSlots : IInventory
     {
         var item = slot.item;
 
-        if (slot.isEmpty || !item.info.canEquipped)
+        if (slot.isEmpty)
             return false;
 
         item.state.isEquipped = true;

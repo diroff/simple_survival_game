@@ -81,7 +81,6 @@ public class UIInventory : MonoBehaviour
         if(_currentSlot.item.state.isEquipped)
             return;
 
-        //inventoryTester.Player.UseItem(_currentSlot.item);
         inventoryTester.EquipItem(_currentSlot);
         
         _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
@@ -95,6 +94,9 @@ public class UIInventory : MonoBehaviour
             RefreshItemDescriptionPanel();
             return;
         }
+
+        if (_currentSlot.item.state.isEquipped)
+            inventoryTester.UnequipItem(_currentSlot.item);
 
         inventoryTester.inventory.RemoveFromSlot(this, _currentSlot, _currentSlot.item.state.amount);
         _currentSlot = null;

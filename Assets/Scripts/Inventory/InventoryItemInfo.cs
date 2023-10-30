@@ -8,8 +8,6 @@ public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo
     [SerializeField] private string _description;
     
     [SerializeField] private InventoryItemType _itemType;
-    [SerializeField] private bool _canUsed;
-    [SerializeField] private bool _canEquipped;
     
     [SerializeField] private int _maxItemsInInventorySlot;
     [SerializeField] private Sprite _icon;
@@ -26,10 +24,6 @@ public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo
     public Sprite icon => _icon;
 
     public InventoryItemType type => _itemType;
-
-    public bool canUsed => _canUsed;
-
-    public bool canEquipped => _canEquipped;
 
     public Sprite sprite => _sprite;
 }
