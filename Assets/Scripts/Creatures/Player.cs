@@ -7,6 +7,10 @@ public class Player : Creature
     [SerializeField] private ItemInEquipment _equippedItem;
     [SerializeField] private Weapon _weapon;
 
+    private delegate void UseEquippedItem(IInventoryItem item);
+
+    private UseEquippedItem _useEquippedItem;
+
     protected override void Update()
     {
         base.Update();
@@ -38,20 +42,7 @@ public class Player : Creature
 
     public void UseItem(IInventoryItem item)
     {
-        switch (item.info.type)
-        {
-            case InventoryItemType.heal:
-                Heal(item);
-                break;
-
-            case InventoryItemType.weapon:
-                Shoot(item);
-                break;
-
-            default:
-                Debug.Log("Can't be used!");
-                break;
-        }
+        _useEquippedItem(item);
     }
 
     private void Heal(IInventoryItem item)
@@ -91,6 +82,22 @@ public class Player : Creature
         }
 
         _equippedItem.SetItem(item);
+
+        switch (item.info.type)
+        {
+            case InventoryItemType.heal:
+                _useEquippedItem = Heal;
+                break;
+
+            case InventoryItemType.weapon:
+                _useEquippedItem = Shoot;
+                WeaponPreparing(item);
+                break;
+
+            default:
+                Debug.Log("Can't be used!");
+                break;
+        }
     }
 
     public void UnequipItem(IInventoryItem item)
