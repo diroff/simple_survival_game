@@ -14,6 +14,7 @@ public interface IInventory
     bool TryToAdd(object sender, IInventoryItem item);
     bool UseItem(object sender, string id);
     bool EquipItem(object sender, IInventoryItem item);
+    bool UnequipItem(object sender, IInventoryItem item);
     void Remove(object sender, string id, int amount = 1);
     bool HasItem(string id, out IInventoryItem item);
 }

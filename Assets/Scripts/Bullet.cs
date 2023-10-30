@@ -4,8 +4,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private Collider2D _collider;
+    [SerializeField] private AmmoItemInfo _ammoInfo;
 
-    private AmmoItemInfo _ammoInfo;
+    public AmmoItemInfo AmmoInfo => _ammoInfo;
 
     private int _damage;
 
@@ -25,11 +26,6 @@ public class Bullet : MonoBehaviour
     {
         _lifeTime = _ammoInfo.LifeTime;
         _damage += _ammoInfo.Damage;
-    }
-
-    public void SetAmmoInfo(AmmoItemInfo info)
-    {
-        _ammoInfo = info;
     }
 
     public void SetDamage(int damage)

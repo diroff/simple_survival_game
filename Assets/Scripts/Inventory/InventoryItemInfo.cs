@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "InventoryItemInfo", menuName = "Gameplay/Items/Create new ItemInfo")]
 public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo
@@ -14,6 +13,7 @@ public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo
     
     [SerializeField] private int _maxItemsInInventorySlot;
     [SerializeField] private Sprite _icon;
+    [SerializeField] private Sprite _sprite;
 
     public string id => _id;
 
@@ -30,4 +30,6 @@ public class InventoryItemInfo : ScriptableObject, IInventoryItemInfo
     public bool canUsed => _canUsed;
 
     public bool canEquipped => _canEquipped;
+
+    public Sprite sprite => _sprite;
 }

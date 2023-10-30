@@ -120,10 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f206d577b218d4599595fb684abd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _power: 15
-  _damage: 1
-  _lifeTime: 1
   _collider: {fileID: 8182512724218301389}
+  _ammoInfo: {fileID: 11400000, guid: 4ea57e01a5b038943b6a2b54f607c2fe, type: 2}
 --- !u!61 &8182512724218301389
 BoxCollider2D:
   m_ObjectHideFlags: 0

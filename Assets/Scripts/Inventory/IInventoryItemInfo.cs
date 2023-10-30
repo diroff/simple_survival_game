@@ -12,4 +12,5 @@ public interface IInventoryItemInfo
 
     int maxItemsInInventorySlot { get; }
     Sprite icon { get; }
+    Sprite sprite { get; }
 }

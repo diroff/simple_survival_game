@@ -1,11 +1,10 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : ItemInEquipment
 {
     [SerializeField] private SpriteRenderer _weaponSprite;
     [SerializeField] private PlayerInventory _playerInventory;
 
-    [SerializeField] private Bullet _bulletPrefab;
     [SerializeField] private GameObject _bulletSpawnPoint;
 
     private WeaponItemInfo _weaponItemInfo;
@@ -14,7 +13,6 @@ public class Weapon : MonoBehaviour
     private int _bulletCount;
 
     public WeaponItemInfo WeaponData => _weaponItemInfo;
-    public IInventoryItem ItemData => _weaponItemData;
     public int BulletCount => _bulletCount;
 
     private void Update()
@@ -27,32 +25,52 @@ public class Weapon : MonoBehaviour
 
     public void SetWeapon(IInventoryItem itemData)
     {
-        if (_weaponItemInfo != null)
+        if(itemData == null)
         {
-            _weaponItemData.state.isEquipped = false;
-            _playerInventory.UseItem();
-
-            if (_bulletCount > 0)
-            {
-                var ammo = new ItemData(_weaponItemInfo.Ammo);
-                ammo.state.amount = _bulletCount;
-
-                _playerInventory.inventory.TryToAdd(this, ammo);
-            }
+            UnequipWeapon();
+            return;
         }
+
+        if (_weaponItemInfo != null)
+            UnloadWeapon();
+
 
         _weaponItemData = itemData;
         _weaponItemInfo = _weaponItemData.info as WeaponItemInfo;
 
         _bulletCount = 0;
-        _weaponSprite.sprite = _weaponItemInfo.Sprite;
+        _weaponSprite.sprite = _weaponItemInfo.sprite;
         _timeFromLastShoot = _weaponItemInfo.Delay;
+    }
+
+    private void UnequipWeapon()
+    {
+        UnloadWeapon();
+
+        _weaponItemData = null;
+        _weaponItemInfo = null;
+        _bulletCount = 0;
+        gameObject.SetActive(false);
+    }
+
+    private void UnloadWeapon()
+    {
+        if (_bulletCount > 0)
+        {
+            var ammo = new ItemData(_weaponItemInfo.BulletPrefab.AmmoInfo);
+            ammo.state.amount = _bulletCount;
+
+            _playerInventory.inventory.TryToAdd(this, ammo);
+        }
     }
 
     public void Shoot(Vector3 direction)
     {
         if (_weaponItemInfo == null)
+        {
+            Debug.Log("No weapon item info");
             return;
+        }
 
         if (!ShootingDelayOver())
             return;
@@ -66,17 +84,17 @@ public class Weapon : MonoBehaviour
         _timeFromLastShoot = 0f;
         _bulletCount--;
 
-        BulletPreparing(direction);
+        CreateBullet(direction);
 
         Debug.Log("Ammo:" + _bulletCount + "/" + _weaponItemInfo.MagazineCapacity);
     }
 
-    private void BulletPreparing(Vector3 direction)
+    private void CreateBullet(Vector3 direction)
     {
-        var bullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.transform.position, Quaternion.identity);
+        var bullet = Instantiate(_weaponItemInfo.BulletPrefab, _bulletSpawnPoint.transform.position, Quaternion.identity);
+
         bullet.SetDamage(_weaponItemInfo.Damage);
         bullet.SetPower(_weaponItemInfo.ShootingPower);
-        bullet.SetAmmoInfo(_weaponItemInfo.Ammo);
         bullet.SetupAmmoInfo();
 
         bullet.Move(direction);
@@ -108,7 +126,7 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        var ammoCount = _playerInventory.inventory.GetItemAmount(_weaponItemInfo.Ammo.id);
+        var ammoCount = _playerInventory.inventory.GetItemAmount(_weaponItemInfo.BulletPrefab.AmmoInfo.id);
 
         if (ammoCount == 0)
         {
@@ -119,7 +137,7 @@ public class Weapon : MonoBehaviour
         var reloadedAmmoAmount = _bulletCount + ammoCount >= _weaponItemInfo.MagazineCapacity ? _weaponItemInfo.MagazineCapacity - _bulletCount : ammoCount;
 
         _bulletCount += reloadedAmmoAmount;
-        _playerInventory.inventory.Remove(this, _weaponItemInfo.Ammo.id, reloadedAmmoAmount);
+        _playerInventory.inventory.Remove(this, _weaponItemInfo.BulletPrefab.AmmoInfo.id, reloadedAmmoAmount);
 
         Debug.Log("Ammo:" + _bulletCount + "/" + _weaponItemInfo.MagazineCapacity);
     }

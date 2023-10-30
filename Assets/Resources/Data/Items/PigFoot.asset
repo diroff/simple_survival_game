@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87e1153d9a10b7f40b38fc6b5db4f47f, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cdcd6e61c5c7b2489ab7d659f0c8725, type: 3}
   m_Name: PigFoot
   m_EditorClassIdentifier: 
   _id: pig cooked foot
@@ -17,5 +17,8 @@ MonoBehaviour:
   _description: Ugly foot of ugly pig. Not tasty
   _itemType: 0
   _canUsed: 1
+  _canEquipped: 0
   _maxItemsInInventorySlot: 16
   _icon: {fileID: 8468823292800697166, guid: eb12f7bfac0d77046905ee79ff5c9e44, type: 3}
+  _sprite: {fileID: 8468823292800697166, guid: eb12f7bfac0d77046905ee79ff5c9e44, type: 3}
+  _healthPower: 5

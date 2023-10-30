@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3022758047450197817}
   - component: {fileID: 3022758047450197822}
-  - component: {fileID: 3022758047450197823}
   - component: {fileID: 3022758047450197820}
+  - component: {fileID: 5438890540441441375}
   m_Layer: 0
   m_Name: PigFoot
   m_TagString: Untagged
@@ -86,22 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3022758047450197823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3022758047450197792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a084d6f2f5de5e54282b4b4d36344a13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _info: {fileID: 11400000, guid: a6f5fca8470115b4b8c13bbd0468c003, type: 2}
-  _state:
-    itemAmount: 8
-    isItemEquipped: 0
 --- !u!61 &3022758047450197820
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -128,3 +112,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5984948, y: 0.6539583}
   m_EdgeRadius: 0
+--- !u!114 &5438890540441441375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3022758047450197792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5537954d12a2614459254663612bddb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _info: {fileID: 11400000, guid: b57c11b8c3869e94383998dbc33e3e48, type: 2}
+  _state:
+    itemAmount: 1
+    isItemEquipped: 0

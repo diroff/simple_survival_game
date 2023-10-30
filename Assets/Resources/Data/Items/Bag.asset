@@ -15,6 +15,9 @@ MonoBehaviour:
   _id: soviet bag
   _title: Soviet bag
   _description: Simple and pretty green bag
+  _itemType: 3
+  _canUsed: 0
+  _canEquipped: 0
   _maxItemsInInventorySlot: 1
   _icon: {fileID: 21300000, guid: 93bce68c22ba2ed4592b0338ae2ac8fd, type: 3}
-  _itemType: 3
+  _sprite: {fileID: 21300000, guid: 93bce68c22ba2ed4592b0338ae2ac8fd, type: 3}

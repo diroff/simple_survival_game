@@ -78,18 +78,13 @@ public class UIInventory : MonoBehaviour
         if (_currentSlot == null || _currentSlot.isEmpty)
             return;
 
-        if(!_currentSlot.item.state.isEquipped && _currentSlot.item.info.canEquipped)
-        {
-            inventoryTester.Player.UseItem(_currentSlot.item);
-            inventory.EquipItemFromSlot(this, _currentSlot);
-            _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
-            RefreshItemDescriptionPanel();
+        if(_currentSlot.item.state.isEquipped)
             return;
-        }
 
+        //inventoryTester.Player.UseItem(_currentSlot.item);
+        inventoryTester.EquipItem(_currentSlot);
+        
         _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
-        inventoryTester.Player.UseItem(_currentSlot.item);
-        inventory.UseItemFromSlot(this, _currentSlot);
         RefreshItemDescriptionPanel();
     }
 
@@ -145,12 +140,9 @@ public class UIInventory : MonoBehaviour
         _UIItemTitleText.text = _currentSlot.item.info.title;
         _UIItemDescriptionText.text = _currentSlot.item.info.description;
 
-        bool showUseButton = _currentSlot.item.info.canUsed? true: false;
+        bool showUseButton = _currentSlot.item.state.isEquipped ? true: false;
 
-        if (_currentSlot.item.state.isEquipped)
-            showUseButton = false;
-
-        _useItemButton.gameObject.SetActive(showUseButton);
+        _useItemButton.gameObject.SetActive(!showUseButton);
         _dropItemButton.gameObject.SetActive(true);
     }
 

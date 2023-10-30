@@ -49,9 +49,17 @@ public class PlayerInventory : MonoBehaviour
         inventory.TryToAddToSlot(this, slot, item);
     }
 
-    public void UseItem()
+    public void EquipItem(IInventorySlot slot)
     {
+        inventory.EquipItemFromSlot(this, slot);
+        Player.EquipItem(slot.item);
+
         OnInventoryStateChanged(this);
+    }
+
+    public void UnequipItem(IInventoryItem item)
+    {
+        inventory.UnequipItem(this, item);
     }
 
     private void OnInventoryStateChanged(object sender)

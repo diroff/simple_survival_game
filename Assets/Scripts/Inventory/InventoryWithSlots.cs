@@ -295,4 +295,24 @@ public class InventoryWithSlots : IInventory
         item.state.isEquipped = true;
         return true;
     }
+
+    public bool UnequipItem(object sender, IInventoryItem item)
+    {
+        if (!item.state.isEquipped)
+            return false;
+
+        item.state.isEquipped = false;
+        return true;
+    }
+
+    public bool UnequipItemFromSlot(object sender, IInventorySlot slot)
+    {
+        var item = slot.item;
+
+        if (slot.isEmpty || !item.state.isEquipped)
+            return false;
+
+        item.state.isEquipped = false;
+        return true;
+    }
 }

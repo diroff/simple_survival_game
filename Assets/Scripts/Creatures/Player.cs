@@ -4,6 +4,7 @@ public class Player : Creature
 {
     [Header("Data")]
     [SerializeField] private PlayerInventory _inventory;
+    [SerializeField] private ItemInEquipment _equippedItem;
     [SerializeField] private Weapon _weapon;
 
     protected override void Update()
@@ -11,10 +12,9 @@ public class Player : Creature
         base.Update();
         GetInput();
 
-        if (_weapon != null && Input.GetKeyDown(KeyCode.Space))
+        if(_equippedItem != null && Input.GetKeyDown(KeyCode.Space))
         {
-            Vector3 direction = NormalSprite? Vector3.right : Vector3.left;
-            _weapon.Shoot(direction);
+            UseItem(_equippedItem.ItemData);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -38,16 +38,14 @@ public class Player : Creature
 
     public void UseItem(IInventoryItem item)
     {
-        if (item.info.canEquipped)
-        {
-            EquipItem(item);
-            return;
-        }
-
         switch (item.info.type)
         {
             case InventoryItemType.heal:
-                Debug.Log("Tasty! + health from " + item.info.title);
+                Heal(item);
+                break;
+
+            case InventoryItemType.weapon:
+                Shoot(item);
                 break;
 
             default:
@@ -56,13 +54,53 @@ public class Player : Creature
         }
     }
 
+    private void Heal(IInventoryItem item)
+    {
+        HealItemData healItemData = item.info as HealItemData;
+
+        HealthComponent.ModifyHealth(healItemData.HealthPower);
+        _inventory.inventory.Remove(this, item.ID);
+    }
+
+    private void Shoot(IInventoryItem item)
+    {
+        if (_weapon.WeaponData == null)
+            WeaponPreparing(item);
+
+        Vector3 direction = NormalSprite ? Vector3.right : Vector3.left;
+        _weapon.Shoot(direction);
+    }
+
+    private void WeaponPreparing(IInventoryItem item)
+    {
+        _weapon.gameObject.SetActive(true);
+        _weapon.SetWeapon(item);
+    }
+
     private void GetInput()
     {
         InputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
     }
 
-    internal void EquipItem(IInventoryItem item)
+    public void EquipItem(IInventoryItem item)
     {
-        SetWeapon(item);
+        if (_equippedItem != null)
+        {
+            _inventory.UnequipItem(_equippedItem.ItemData);
+            UnequipItem(item);
+        }
+
+        _equippedItem.SetItem(item);
+    }
+
+    public void UnequipItem(IInventoryItem item)
+    {
+        if (_weapon.isActiveAndEnabled)
+            UnequipWeapon();
+    }
+
+    private void UnequipWeapon()
+    {
+        _weapon.SetWeapon(null);
     }
 }

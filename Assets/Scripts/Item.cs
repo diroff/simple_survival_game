@@ -1,43 +1,57 @@
-using System;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+[RequireComponent(typeof(SpriteRenderer))]
+public abstract class Item : MonoBehaviour
 {
-    [SerializeField] private InventoryItemInfo _info;
-    [SerializeField] private InventoryItemState _state;
+    [SerializeField] protected InventoryItemInfo _info;
+    [SerializeField] protected InventoryItemState _state;
 
-    private ItemData _itemData; 
+    protected ItemData itemData;
+    protected SpriteRenderer spriteRenderer;
 
-    public ItemData ItemData => _itemData;
+    public ItemData ItemData => itemData;
 
     private void Awake()
     {
-        _itemData = new ItemData(_info);
-        _itemData.state = _state;
+        itemData = new ItemData(_info);
+        itemData.state = _state;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
         if (_info != null)
-            _itemData.info = _info;
+            itemData.info = _info;
 
         if(_state != null)
-            _itemData.state = _state;
+            itemData.state = _state;
+
+        if (itemData.info == null || itemData.state == null)
+            return;
+
+        if (spriteRenderer.sprite == null)
+            UpdateSprite();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void UpdateSprite()
     {
-        if (!collision.gameObject.CompareTag("Player"))
+        if(itemData.info == null)
+        {
+            spriteRenderer.sprite = null;
             return;
+        }
 
-        var player = collision.gameObject.GetComponent<Player>();
+        spriteRenderer.sprite = itemData.info.sprite;
+    }
 
-        if (player == null)
-            return;
+    public virtual void SetItem(IInventoryItem item)
+    {
+        _info = item.info as InventoryItemInfo;
+        _state = item.state as InventoryItemState;
 
-        if (player.AddItem(this, _itemData))
-            Destroy(gameObject);
-        else
-            Debug.Log("Can't added");
+        itemData.info = _info;
+        itemData.state = _state;
+
+        UpdateSprite();
     }
 }
