@@ -90,10 +90,7 @@ public class Player : Creature
         _equippedItem.gameObject.SetActive(true);
 
         if (_equippedItem.ItemData.info != null)
-        {
             _inventory.UnequipItem(_equippedItem.ItemData);
-            UnequipItem();
-        }
 
         _equippedItem.gameObject.SetActive(true);
         _equippedItem.SetItem(item);

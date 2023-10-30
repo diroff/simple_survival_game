@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
 public class UIInventory : MonoBehaviour
@@ -78,13 +76,24 @@ public class UIInventory : MonoBehaviour
         if (_currentSlot == null || _currentSlot.isEmpty)
             return;
 
-        if(_currentSlot.item.state.isEquipped)
+        if (_currentSlot.item.state.isEquipped)
+        {
+            UnequipItem();
+            _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
             return;
+        }
 
         inventoryTester.EquipItem(_currentSlot);
         
         _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
         RefreshItemDescriptionPanel();
+    }
+
+    public void UnequipItem()
+    {
+        inventoryTester.UnequipItem(_currentSlot.item);
+        RefreshItemDescriptionPanel();
+        _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
     }
 
     public void DropItem()
@@ -114,6 +123,10 @@ public class UIInventory : MonoBehaviour
     public void OpenInventory()
     {
         _inventory.SetActive(true);
+        _curentSlotUI.CancelSelect();
+        _curentSlotUI = null;
+        _currentSlot = null;
+        RefreshItemDescriptionPanel();
     }
 
     public void CloseInventory()
@@ -142,9 +155,7 @@ public class UIInventory : MonoBehaviour
         _UIItemTitleText.text = _currentSlot.item.info.title;
         _UIItemDescriptionText.text = _currentSlot.item.info.description;
 
-        bool showUseButton = _currentSlot.item.state.isEquipped ? true: false;
-
-        _useItemButton.gameObject.SetActive(!showUseButton);
+        _useItemButton.gameObject.SetActive(true);
         _dropItemButton.gameObject.SetActive(true);
     }
 

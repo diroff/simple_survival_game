@@ -14,8 +14,8 @@ public class UIInventoryItem : UIItem
     {
         if (slot.isEmpty)
         {
-            CleanUp();
             _equippedIndicator.gameObject.SetActive(false);
+            CleanUp();
             return;
         }
 
