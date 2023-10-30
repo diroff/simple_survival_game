@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : Creature
 {
@@ -16,7 +17,7 @@ public class Player : Creature
         base.Update();
         GetInput();
 
-        if(_equippedItem != null && Input.GetKeyDown(KeyCode.Space))
+        if(_equippedItem.ItemData.info != null && Input.GetKeyDown(KeyCode.Space))
         {
             UseItem(_equippedItem.ItemData);
         }
@@ -43,6 +44,9 @@ public class Player : Creature
     public void UseItem(IInventoryItem item)
     {
         _useEquippedItem(item);
+
+        if(item.state.amount <= 0)
+            UnequipItem(item);
     }
 
     private void Heal(IInventoryItem item)
@@ -62,6 +66,11 @@ public class Player : Creature
         _weapon.Shoot(direction);
     }
 
+    private void UseNothing(IInventoryItem item)
+    {
+        Debug.Log("No items in my hands");
+    }
+
     private void WeaponPreparing(IInventoryItem item)
     {
         _weapon.gameObject.SetActive(true);
@@ -75,7 +84,7 @@ public class Player : Creature
 
     public void EquipItem(IInventoryItem item)
     {
-        if (_equippedItem != null)
+        if (_equippedItem.ItemData.info != null)
         {
             _inventory.UnequipItem(_equippedItem.ItemData);
             UnequipItem(item);
@@ -95,7 +104,7 @@ public class Player : Creature
                 break;
 
             default:
-                Debug.Log("Can't be used!");
+                _useEquippedItem = UseNothing;
                 break;
         }
     }
@@ -104,6 +113,10 @@ public class Player : Creature
     {
         if (_weapon.isActiveAndEnabled)
             UnequipWeapon();
+
+        _equippedItem.SetItem(null);
+        _useEquippedItem = UseNothing;
+        Debug.Log("Item was unequipped");
     }
 
     private void UnequipWeapon()
