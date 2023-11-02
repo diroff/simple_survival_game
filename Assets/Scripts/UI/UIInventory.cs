@@ -123,6 +123,10 @@ public class UIInventory : MonoBehaviour
     public void OpenInventory()
     {
         _inventory.SetActive(true);
+
+        if (_curentSlotUI == null)
+            return;
+
         _curentSlotUI.CancelSelect();
         _curentSlotUI = null;
         _currentSlot = null;
