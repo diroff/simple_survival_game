@@ -9,6 +9,9 @@ public class Creature : MonoBehaviour
     [SerializeField] protected float Decceleration = 52f;
     [SerializeField] protected float TurnSpeed = 80f;
 
+    [Space]
+    [SerializeField] private GameObject _spritePlacement;
+
     protected Vector2 InputVector;
     private Vector2 _desiredVelocity;
     private Vector2 _velocity;
@@ -58,12 +61,12 @@ public class Creature : MonoBehaviour
         {
             if (InputVector.x > 0)
             {
-                transform.localScale = Vector3.one;
+                _spritePlacement.transform.localScale = Vector3.one;
                 NormalSprite = true;
             }
             else
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                _spritePlacement.transform.localScale = new Vector3(-1, 1, 1);
                 NormalSprite = false;
             }
         }
