@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Player : Creature
 {
@@ -11,6 +10,11 @@ public class Player : Creature
     private delegate void UseEquippedItem(IInventoryItem item);
 
     private UseEquippedItem _useEquippedItem;
+
+    private void Start()
+    {
+        _useEquippedItem = UseNothing;
+    }
 
     protected override void Update()
     {
