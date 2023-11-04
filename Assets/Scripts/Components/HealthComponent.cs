@@ -4,40 +4,48 @@ using UnityEngine.Events;
 
 public class HealthComponent : MonoBehaviour
 {
-    [SerializeField] private int _health;
-    [SerializeField] private UnityEvent _onDamage;
-    [SerializeField] private UnityEvent _onHeal;
-    [SerializeField] private UnityEvent _onDie;
-    [SerializeField] private HealthChangeEvent _onChange;
+    [SerializeField] private int _maxHealth;
 
-    public int Health => _health;
+    public UnityAction OnDamage;
+    public UnityAction OnHeal;
+    public UnityAction OnDie;
+
+    public UnityAction<int, int> OnHealthChanged;
+
+    private int _currentHealth;
+
+    private void Start()
+    {
+        _currentHealth = _maxHealth;
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+    }
 
     public void ModifyHealth(int healthDelta)
     {
-        _health += healthDelta;
-        _onChange?.Invoke(_health);
+        _currentHealth += healthDelta;
 
         if (healthDelta < 0)
-        {
-            _onDamage?.Invoke();
-        }
+            TakeDamage();
 
         if (healthDelta >= 0)
-        {
-            _onHeal?.Invoke();
-        }
+            Heal();
 
-        if (_health <= 0)
-            _onDie?.Invoke();
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+        if (_maxHealth <= 0)
+            OnDie?.Invoke();
     }
 
-    public void SetHealth(int health)
+    private void Heal()
     {
-        _health = health;
+        OnHeal?.Invoke();
     }
 
-    [Serializable]
-    public class HealthChangeEvent : UnityEvent<int>
+    private void TakeDamage()
     {
+        if (_currentHealth < 0)
+            _currentHealth = 0;
+
+        OnDamage?.Invoke();
     }
 }
