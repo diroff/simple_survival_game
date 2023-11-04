@@ -5,6 +5,5 @@ public class Enemy : Creature
     public override void TakeDamage(int value)
     {
         base.TakeDamage(value);
-        Debug.Log("Current health:" + HealthComponent.Health);
     }
 }
