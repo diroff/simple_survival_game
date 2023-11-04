@@ -1,10 +1,18 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIHealthPanel : MonoBehaviour
 {
     [SerializeField] private HealthComponent _health;
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private TextMeshProUGUI _textField;
+    [SerializeField] private Slider _slider;
+
+    private void Awake()
+    {
+        if(_health == null)
+            _health = GetComponentInParent<HealthComponent>();
+    }
 
     private void OnEnable()
     {
@@ -18,6 +26,8 @@ public class UIHealthPanel : MonoBehaviour
 
     private void OnHealthChanged(int currentValue, int maxValue)
     {
-        _text.text = $"{currentValue}/{maxValue}";
+        _textField.text = $"{currentValue}/{maxValue}";
+
+        _slider.value = (float)currentValue / maxValue;
     }
 }
