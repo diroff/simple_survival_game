@@ -10,6 +10,7 @@ public class Player : Creature
     private delegate void UseEquippedItem(IInventoryItem item);
 
     private UseEquippedItem _useEquippedItem;
+    private IInteractable _currentInterctable;
 
     private void Start()
     {
@@ -21,13 +22,24 @@ public class Player : Creature
         base.Update();
         GetInput();
 
-        if(_equippedItem != null && Input.GetKeyDown(KeyCode.Space))
+        if(_equippedItem.ItemData != null && Input.GetKeyDown(KeyCode.Space))
         {
             UseItem(_equippedItem.ItemData);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
             _weapon.Reload();
+
+        if (Input.GetKeyDown(KeyCode.E))
+            InteractWith();
+    }
+
+    public void InteractWith()
+    {
+        if (_currentInterctable == null)
+            return;
+
+        _currentInterctable.Interact();
     }
 
     public void SetWeapon(IInventoryItem itemData)
@@ -38,6 +50,22 @@ public class Player : Creature
     public bool AddItem(object sender, IInventoryItem item)
     {
         return _inventory.inventory.TryToAdd(sender, item);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Interactable"))
+            return;
+
+        _currentInterctable = collision.GetComponent<IInteractable>();
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Interactable"))
+            return;
+
+        _currentInterctable = null;
     }
 
     public override void TakeDamage(int value)
