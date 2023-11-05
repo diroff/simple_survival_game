@@ -11,6 +11,9 @@ public abstract class Item : MonoBehaviour
 
     public ItemData ItemData => itemData;
 
+    public IInventoryItemInfo Info => _info;
+    public IInventoryItemState State => _state;
+
     private void Awake()
     {
         itemData = new ItemData(_info);
@@ -53,5 +56,15 @@ public abstract class Item : MonoBehaviour
         itemData.state = _state;
 
         UpdateSprite();
+    }
+
+    public void SetInfo(InventoryItemInfo info)
+    {
+        _info = info;
+    }
+
+    public void SetState(InventoryItemState state)
+    {
+        _state = state;
     }
 }
