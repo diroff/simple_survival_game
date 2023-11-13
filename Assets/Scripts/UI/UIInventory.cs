@@ -14,6 +14,7 @@ public class UIInventory : MonoBehaviour
  
     [SerializeField] private TextMeshProUGUI _UIItemTitleText;
     [SerializeField] private TextMeshProUGUI _UIItemDescriptionText;
+    [SerializeField] private Image _uiItemIcon;
 
     [SerializeField] private Button _useItemButton;
     [SerializeField] private Button _dropItemButton;
@@ -158,6 +159,7 @@ public class UIInventory : MonoBehaviour
 
         _UIItemTitleText.text = _currentSlot.item.info.title;
         _UIItemDescriptionText.text = _currentSlot.item.info.description;
+        _uiItemIcon.sprite = _currentSlot.item.info.icon;
 
         _useItemButton.gameObject.SetActive(true);
         _dropItemButton.gameObject.SetActive(true);
