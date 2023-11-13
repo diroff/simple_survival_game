@@ -11,13 +11,11 @@ public class UIInventory : MonoBehaviour
 
     [SerializeField] private GameObject _inventory;
     [SerializeField] private GameObject _descriptionPanel;
+    [SerializeField] private GameObject _actionsPanel;
  
     [SerializeField] private TextMeshProUGUI _UIItemTitleText;
     [SerializeField] private TextMeshProUGUI _UIItemDescriptionText;
     [SerializeField] private Image _uiItemIcon;
-
-    [SerializeField] private Button _useItemButton;
-    [SerializeField] private Button _dropItemButton;
 
     public InventoryWithSlots inventory => inventoryTester.inventory;
     public UIInventorySlot[] uiSlots { get; private set; }
@@ -156,20 +154,16 @@ public class UIInventory : MonoBehaviour
 
         _curentSlotUI.Select();
         _descriptionPanel.SetActive(true);
+        _actionsPanel.SetActive(true);
 
         _UIItemTitleText.text = _currentSlot.item.info.title;
         _UIItemDescriptionText.text = _currentSlot.item.info.description;
         _uiItemIcon.sprite = _currentSlot.item.info.icon;
-
-        _useItemButton.gameObject.SetActive(true);
-        _dropItemButton.gameObject.SetActive(true);
     }
 
     public void DisableItemDescriptionPanel()
     {
         _descriptionPanel.SetActive(false);
-
-        _useItemButton.gameObject.SetActive(false);
-        _dropItemButton.gameObject.SetActive(false);
+        _actionsPanel.SetActive(false);
     }
 }
