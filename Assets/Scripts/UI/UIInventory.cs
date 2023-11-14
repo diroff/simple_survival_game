@@ -6,24 +6,27 @@ using UnityEngine.UI;
 
 public class UIInventory : MonoBehaviour
 {
-    [SerializeField] private PlayerInventory inventoryTester;
+    [SerializeField] private PlayerInventory _playerInventory;
+    [Space]
+
+    [Header("Inventory Grid")]
+    [SerializeField] UIInventoryGrid _uiItemsGrid;
+    [SerializeField] UIInventoryGrid _uiEquippedGrid;
+    [SerializeField] UIInventoryGrid _uiArmorGrid;
+
     [SerializeField] private UIInventorySlot _uiInventorySlotPrefab;
-    [SerializeField] private GridLayoutGroup _gridLayoutGroup;
+    [SerializeField] private GameObject _uiInventoryPanel;
+    [Space]
 
-    [SerializeField] private GameObject _uiArmorSlots;
-    [SerializeField] private GridLayoutGroup _armorGridLayoutGroup;
-    [SerializeField] private GameObject _uiEquipmentSlots;
-    [SerializeField] private GridLayoutGroup _equippedGridLayoutGroup;
-
-    [SerializeField] private GameObject _inventory;
     [SerializeField] private GameObject _descriptionPanel;
     [SerializeField] private GameObject _actionsPanel;
- 
-    [SerializeField] private TextMeshProUGUI _UIItemTitleText;
-    [SerializeField] private TextMeshProUGUI _UIItemDescriptionText;
+
+    [Header("Description panel")]
+    [SerializeField] private TextMeshProUGUI _uiItemTitleText;
+    [SerializeField] private TextMeshProUGUI _uiItemDescriptionText;
     [SerializeField] private Image _uiItemIcon;
 
-    public InventoryWithSlots inventory => inventoryTester.inventory;
+    public InventoryWithSlots inventory => _playerInventory.inventory;
     public UIInventorySlot[] uiSlots { get; private set; }
 
     private IInventorySlot _currentSlot;
@@ -41,62 +44,39 @@ public class UIInventory : MonoBehaviour
 
     public void CreateInventoryUI()
     {
-        for (int i = 0; i < inventory.capacity - inventoryTester.EquipmentSlotsCount - inventoryTester.ArmorSLotsCount; i++)
-        {
-            Instantiate(_uiInventorySlotPrefab, transform);
-        }
+        for (int i = 0; i < inventory.capacity - _playerInventory.EquipmentSlotsCount - _playerInventory.ArmorSLotsCount; i++)
+            Instantiate(_uiInventorySlotPrefab, _uiItemsGrid.transform);
 
-        for (int i = 0; i < inventoryTester.EquipmentSlotsCount; i++)
-        {
-            Instantiate(_uiInventorySlotPrefab, _uiEquipmentSlots.transform);
-        }
+        for (int i = 0; i < _playerInventory.EquipmentSlotsCount; i++)
+            Instantiate(_uiInventorySlotPrefab, _uiEquippedGrid.transform);
 
-        for (int i = 0; i < inventoryTester.ArmorSLotsCount; i++)
-        {
-            Instantiate(_uiInventorySlotPrefab, _uiArmorSlots.transform);
-        }
+        for (int i = 0; i < _playerInventory.ArmorSLotsCount; i++)
+            Instantiate(_uiInventorySlotPrefab, _uiArmorGrid.transform);
 
-        uiSlots = GetComponentsInChildren<UIInventorySlot>();
+        var itemsSlot = _uiItemsGrid.GetComponentsInChildren<UIInventorySlot>();
+        var equipmentUISlots = _uiEquippedGrid.GetComponentsInChildren<UIInventorySlot>();
+        var armorUISlots = _uiArmorGrid.GetComponentsInChildren<UIInventorySlot>();
 
-        var armorUISlots = _uiArmorSlots.GetComponentsInChildren<UIInventorySlot>();
-        var equipmentUISlots = _uiEquipmentSlots.GetComponentsInChildren<UIInventorySlot>();
-
-        UIInventorySlot[] allSlots = new UIInventorySlot[uiSlots.Length + armorUISlots.Length + equipmentUISlots.Length];
-
-        allSlots = uiSlots.Concat(equipmentUISlots.Concat(armorUISlots)).ToArray();
-
+        UIInventorySlot[] allSlots = itemsSlot.Concat(equipmentUISlots.Concat(armorUISlots)).ToArray();
         uiSlots = allSlots;
 
         foreach (var slot in uiSlots)
-        {
             slot.SetUIInventory(this);
-        }
 
-        StartCoroutine(GridSorting());
-    }
-
-    private IEnumerator GridSorting()
-    {
-        _gridLayoutGroup.enabled = true;
-        _armorGridLayoutGroup.enabled = true;
-        _equippedGridLayoutGroup.enabled = true;
-
-        yield return new WaitForEndOfFrame();
-
-        _gridLayoutGroup.enabled = false;
-        _armorGridLayoutGroup.enabled = false;
-        _equippedGridLayoutGroup.enabled = false;
+        _uiItemsGrid.SortInventory();
+        _uiEquippedGrid.SortInventory();
+        _uiArmorGrid.SortInventory();
     }
 
     private void OnEnable()
     {
         if(inventory != null)
-            inventoryTester.inventory.OnInventoryStateChangedEvent += Inventory_OnInventoryStateChangedEvent;
+            _playerInventory.inventory.OnInventoryStateChangedEvent += Inventory_OnInventoryStateChangedEvent;
     }
 
     private void OnDisable()
     {
-        inventoryTester.inventory.OnInventoryStateChangedEvent -= Inventory_OnInventoryStateChangedEvent;
+        _playerInventory.inventory.OnInventoryStateChangedEvent -= Inventory_OnInventoryStateChangedEvent;
     }
 
     private void Inventory_OnInventoryStateChangedEvent(object obj)
@@ -116,7 +96,7 @@ public class UIInventory : MonoBehaviour
             return;
         }
 
-        inventoryTester.EquipItem(_currentSlot);
+        _playerInventory.EquipItem(_currentSlot);
         
         _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
         RefreshItemDescriptionPanel();
@@ -124,7 +104,7 @@ public class UIInventory : MonoBehaviour
 
     public void UnequipItem()
     {
-        inventoryTester.UnequipItem(_currentSlot.item);
+        _playerInventory.UnequipItem(_currentSlot.item);
         RefreshItemDescriptionPanel();
         _curentSlotUI.UIInventoryItem.Refresh(_currentSlot);
     }
@@ -138,16 +118,16 @@ public class UIInventory : MonoBehaviour
         }
 
         if (_currentSlot.item.state.isEquipped)
-            inventoryTester.UnequipItem(_currentSlot.item);
+            _playerInventory.UnequipItem(_currentSlot.item);
 
-        inventoryTester.inventory.RemoveFromSlot(this, _currentSlot, _currentSlot.item.state.amount);
+        _playerInventory.inventory.RemoveFromSlot(this, _currentSlot, _currentSlot.item.state.amount);
         _currentSlot = null;
         RefreshItemDescriptionPanel();
     }
 
     public void InteractWithInventory()
     {
-        if (_inventory.activeSelf)
+        if (_uiInventoryPanel.activeSelf)
             CloseInventory();
         else
             OpenInventory();
@@ -155,7 +135,7 @@ public class UIInventory : MonoBehaviour
 
     public void OpenInventory()
     {
-        _inventory.SetActive(true);
+        _uiInventoryPanel.SetActive(true);
 
         if (_curentSlotUI == null)
             return;
@@ -168,7 +148,7 @@ public class UIInventory : MonoBehaviour
 
     public void CloseInventory()
     {
-        _inventory.SetActive(false);
+        _uiInventoryPanel.SetActive(false);
     }
 
     public void RefreshItemDescriptionPanel()
@@ -190,8 +170,8 @@ public class UIInventory : MonoBehaviour
         _descriptionPanel.SetActive(true);
         _actionsPanel.SetActive(true);
 
-        _UIItemTitleText.text = _currentSlot.item.info.title;
-        _UIItemDescriptionText.text = _currentSlot.item.info.description;
+        _uiItemTitleText.text = _currentSlot.item.info.title;
+        _uiItemDescriptionText.text = _currentSlot.item.info.description;
         _uiItemIcon.sprite = _currentSlot.item.info.icon;
     }
 

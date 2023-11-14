@@ -12,7 +12,7 @@ public class UIInventoryItem : UIItem
 
     public void Refresh(IInventorySlot slot)
     {
-        if (slot.isEmpty)
+        if (slot.isEmpty || slot == null)
         {
             _equippedIndicator.gameObject.SetActive(false);
             CleanUp();

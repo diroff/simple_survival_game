@@ -33,6 +33,7 @@ public class UIInventorySlot : UISlot
 
         Refresh();
         otherSlotUI.Refresh();
+        _uiInventory.ChooseItem(slot, this);
     }
 
     public override void OnPointerClick(PointerEventData eventData)
@@ -43,8 +44,7 @@ public class UIInventorySlot : UISlot
 
     public void Refresh()
     {
-        if (slot != null)
-            _uiInventoryItem.Refresh(slot);
+        _uiInventoryItem.Refresh(slot);
     }
 
     public void Select()
