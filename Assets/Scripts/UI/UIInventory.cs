@@ -15,6 +15,7 @@ public class UIInventory : MonoBehaviour
     [SerializeField] UIInventoryGrid _uiArmorGrid;
     [Space]
 
+    [SerializeField] private GameObject _inventorySlots;
     [SerializeField] private GameObject _uiInventoryPanel;
     [SerializeField] private GameObject _descriptionPanel;
     [SerializeField] private GameObject _actionsPanel;
@@ -71,6 +72,9 @@ public class UIInventory : MonoBehaviour
         _uiArmorGrid.SortInventory();
 
         yield return new WaitForEndOfFrame();
+
+        foreach (var slot in uiSlots)
+            slot.transform.SetParent(_inventorySlots.transform);
 
         CloseInventory();
     }
