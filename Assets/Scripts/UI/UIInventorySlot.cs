@@ -12,9 +12,9 @@ public class UIInventorySlot : UISlot
 
     private UIInventory _uiInventory;
 
-    private void Awake()
+    public void SetUIInventory(UIInventory uiInventory)
     {
-        _uiInventory = GetComponentInParent<UIInventory>();
+        _uiInventory = uiInventory;
     }
 
     public void SetSlot(IInventorySlot newSlot)

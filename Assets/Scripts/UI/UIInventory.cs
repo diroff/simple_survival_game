@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,11 @@ public class UIInventory : MonoBehaviour
     [SerializeField] private PlayerInventory inventoryTester;
     [SerializeField] private UIInventorySlot _uiInventorySlotPrefab;
     [SerializeField] private GridLayoutGroup _gridLayoutGroup;
+
+    [SerializeField] private GameObject _uiArmorSlots;
+    [SerializeField] private GridLayoutGroup _armorGridLayoutGroup;
+    [SerializeField] private GameObject _uiEquipmentSlots;
+    [SerializeField] private GridLayoutGroup _equippedGridLayoutGroup;
 
     [SerializeField] private GameObject _inventory;
     [SerializeField] private GameObject _descriptionPanel;
@@ -35,12 +41,36 @@ public class UIInventory : MonoBehaviour
 
     public void CreateInventoryUI()
     {
-        for (int i = 0; i < inventory.capacity; i++)
+        for (int i = 0; i < inventory.capacity - inventoryTester.EquipmentSlotsCount - inventoryTester.ArmorSLotsCount; i++)
         {
             Instantiate(_uiInventorySlotPrefab, transform);
         }
 
+        for (int i = 0; i < inventoryTester.EquipmentSlotsCount; i++)
+        {
+            Instantiate(_uiInventorySlotPrefab, _uiEquipmentSlots.transform);
+        }
+
+        for (int i = 0; i < inventoryTester.ArmorSLotsCount; i++)
+        {
+            Instantiate(_uiInventorySlotPrefab, _uiArmorSlots.transform);
+        }
+
         uiSlots = GetComponentsInChildren<UIInventorySlot>();
+
+        var armorUISlots = _uiArmorSlots.GetComponentsInChildren<UIInventorySlot>();
+        var equipmentUISlots = _uiEquipmentSlots.GetComponentsInChildren<UIInventorySlot>();
+
+        UIInventorySlot[] allSlots = new UIInventorySlot[uiSlots.Length + armorUISlots.Length + equipmentUISlots.Length];
+
+        allSlots = uiSlots.Concat(equipmentUISlots.Concat(armorUISlots)).ToArray();
+
+        uiSlots = allSlots;
+
+        foreach (var slot in uiSlots)
+        {
+            slot.SetUIInventory(this);
+        }
 
         StartCoroutine(GridSorting());
     }
@@ -48,10 +78,14 @@ public class UIInventory : MonoBehaviour
     private IEnumerator GridSorting()
     {
         _gridLayoutGroup.enabled = true;
+        _armorGridLayoutGroup.enabled = true;
+        _equippedGridLayoutGroup.enabled = true;
 
         yield return new WaitForEndOfFrame();
 
         _gridLayoutGroup.enabled = false;
+        _armorGridLayoutGroup.enabled = false;
+        _equippedGridLayoutGroup.enabled = false;
     }
 
     private void OnEnable()

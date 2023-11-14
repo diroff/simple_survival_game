@@ -809,6 +809,10 @@ MonoBehaviour:
   inventoryTester: {fileID: 2066843733}
   _uiInventorySlotPrefab: {fileID: 540055237551633756, guid: 4ea3cfc8a3e10274b8bdb0c28a197ea2, type: 3}
   _gridLayoutGroup: {fileID: 160327259}
+  _uiArmorSlots: {fileID: 2140858313}
+  _armorGridLayoutGroup: {fileID: 2140858315}
+  _uiEquipmentSlots: {fileID: 159547730}
+  _equippedGridLayoutGroup: {fileID: 159547732}
   _inventory: {fileID: 195782079}
   _descriptionPanel: {fileID: 1993920643}
   _actionsPanel: {fileID: 666690566}
@@ -4908,6 +4912,8 @@ MonoBehaviour:
   _inventory: {fileID: 195782079}
   uiInventory: {fileID: 160327260}
   _capacity: 15
+  _armorSlotsCount: 4
+  _equipmentSlotsCount: 5
 --- !u!1 &2123159096
 GameObject:
   m_ObjectHideFlags: 0

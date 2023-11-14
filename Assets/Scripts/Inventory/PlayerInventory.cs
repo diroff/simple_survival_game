@@ -6,15 +6,21 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private UIInventory uiInventory;
     [SerializeField] private int _capacity;
 
+    [SerializeField] private int _armorSlotsCount;
+    [SerializeField] private int _equipmentSlotsCount;
+
     public InventoryWithSlots inventory { get; private set; }
     public Player Player { get; private set; }
     public UIInventory UIInventory => uiInventory;
+
+    public int ArmorSLotsCount => _armorSlotsCount;
+    public int EquipmentSlotsCount => _equipmentSlotsCount;
 
     private UIInventorySlot[] _uiSlots;
     
     private void Start()
     {
-        inventory = new InventoryWithSlots(_capacity);
+        inventory = new InventoryWithSlots(_capacity + _armorSlotsCount + _equipmentSlotsCount);
         inventory.OnInventoryStateChangedEvent += OnInventoryStateChanged;
 
         uiInventory.CreateInventoryUI();
