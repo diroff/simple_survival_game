@@ -5,6 +5,12 @@ using UnityEngine.UI;
 public class UIInventoryGrid : MonoBehaviour
 {
     [SerializeField] private GridLayoutGroup _gridLayoutGroup;
+    [SerializeField] private UIInventorySlot _slotPrefab;
+
+    public void CreateSlot()
+    {
+        Instantiate(_slotPrefab, transform);
+    }
 
     public void SortInventory()
     {

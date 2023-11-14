@@ -13,11 +13,9 @@ public class UIInventory : MonoBehaviour
     [SerializeField] UIInventoryGrid _uiItemsGrid;
     [SerializeField] UIInventoryGrid _uiEquippedGrid;
     [SerializeField] UIInventoryGrid _uiArmorGrid;
-
-    [SerializeField] private UIInventorySlot _uiInventorySlotPrefab;
-    [SerializeField] private GameObject _uiInventoryPanel;
     [Space]
 
+    [SerializeField] private GameObject _uiInventoryPanel;
     [SerializeField] private GameObject _descriptionPanel;
     [SerializeField] private GameObject _actionsPanel;
 
@@ -45,13 +43,13 @@ public class UIInventory : MonoBehaviour
     public void CreateInventoryUI()
     {
         for (int i = 0; i < inventory.capacity - _playerInventory.EquipmentSlotsCount - _playerInventory.ArmorSLotsCount; i++)
-            Instantiate(_uiInventorySlotPrefab, _uiItemsGrid.transform);
+            _uiItemsGrid.CreateSlot();
 
         for (int i = 0; i < _playerInventory.EquipmentSlotsCount; i++)
-            Instantiate(_uiInventorySlotPrefab, _uiEquippedGrid.transform);
+            _uiEquippedGrid.CreateSlot();
 
         for (int i = 0; i < _playerInventory.ArmorSLotsCount; i++)
-            Instantiate(_uiInventorySlotPrefab, _uiArmorGrid.transform);
+            _uiArmorGrid.CreateSlot();
 
         var itemsSlot = _uiItemsGrid.GetComponentsInChildren<UIInventorySlot>();
         var equipmentUISlots = _uiEquippedGrid.GetComponentsInChildren<UIInventorySlot>();
@@ -63,9 +61,18 @@ public class UIInventory : MonoBehaviour
         foreach (var slot in uiSlots)
             slot.SetUIInventory(this);
 
+        StartCoroutine(SortInventory());
+    }
+
+    private IEnumerator SortInventory()
+    {
         _uiItemsGrid.SortInventory();
         _uiEquippedGrid.SortInventory();
         _uiArmorGrid.SortInventory();
+
+        yield return new WaitForEndOfFrame();
+
+        CloseInventory();
     }
 
     private void OnEnable()
