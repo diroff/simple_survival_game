@@ -16,24 +16,20 @@ public abstract class Item : MonoBehaviour
 
     private void Awake()
     {
-        itemData = new ItemData(_info);
-        itemData.state = _state;
+        CreateItemData();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
-        if (_info != null)
-            itemData.info = _info;
-
-        if(_state != null)
-            itemData.state = _state;
-
-        if (itemData.info == null || itemData.state == null)
-            return;
-
         if (spriteRenderer.sprite == null)
             UpdateSprite();
+    }
+
+    private void CreateItemData()
+    {
+        itemData = new ItemData(_info);
+        itemData.state = _state;
     }
 
     public void UpdateSprite()
