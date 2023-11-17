@@ -124,7 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5537954d12a2614459254663612bddb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _info: {fileID: 11400000, guid: 4ea57e01a5b038943b6a2b54f607c2fe, type: 2}
-  _state:
-    itemAmount: 8
-    isItemEquipped: 0
+  _itemData:
+    _info: {fileID: 11400000, guid: 4ea57e01a5b038943b6a2b54f607c2fe, type: 2}
+    _state:
+      itemAmount: 8
+      isItemEquipped: 0
