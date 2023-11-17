@@ -3,7 +3,7 @@ using System;
 [Serializable]
 public class InventoryItemState : IInventoryItemState
 {
-    public int itemAmount;
+    public int itemAmount = 1;
     public bool isItemEquipped;
 
     public int amount { get => itemAmount; set => itemAmount = value; }
@@ -11,7 +11,7 @@ public class InventoryItemState : IInventoryItemState
 
     public InventoryItemState() 
     {
-        itemAmount = 0;
+        itemAmount = 1;
         isItemEquipped = false;
     }
 }
