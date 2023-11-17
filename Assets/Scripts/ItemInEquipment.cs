@@ -15,11 +15,8 @@ public class ItemInEquipment : Item
 
     private void ClearItem()
     {
-        _info = null;
-        _state = null;
-
-        ItemData.info = _info;
-        ItemData.state = _state;
+        itemData.info = null;
+        itemData.state = null;
 
         UpdateSprite();
     }

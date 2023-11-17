@@ -3,16 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public abstract class Item : MonoBehaviour
 {
-    [SerializeField] protected InventoryItemInfo _info;
-    [SerializeField] protected InventoryItemState _state;
+    [SerializeField] private ItemDataForInspector _itemData;
 
     protected ItemData itemData;
     protected SpriteRenderer spriteRenderer;
 
     public ItemData ItemData => itemData;
-
-    public IInventoryItemInfo Info => _info;
-    public IInventoryItemState State => _state;
 
     private void Awake()
     {
@@ -28,8 +24,7 @@ public abstract class Item : MonoBehaviour
 
     private void CreateItemData()
     {
-        itemData = new ItemData(_info);
-        itemData.state = _state;
+        itemData = _itemData.GetData();
     }
 
     public void UpdateSprite()
@@ -45,22 +40,19 @@ public abstract class Item : MonoBehaviour
 
     public virtual void SetItem(IInventoryItem item)
     {
-        _info = item.info as InventoryItemInfo;
-        _state = item.state as InventoryItemState;
-
-        itemData.info = _info;
-        itemData.state = _state;
+        itemData.info = item.info as InventoryItemInfo;
+        itemData.state = item.state as InventoryItemState;
 
         UpdateSprite();
     }
 
     public void SetInfo(InventoryItemInfo info)
     {
-        _info = info;
+        itemData.info = info;
     }
 
     public void SetState(InventoryItemState state)
     {
-        _state = state;
+        itemData.state = state;
     }
 }
