@@ -3,34 +3,23 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour, IInteractable
 {
-    [SerializeField] private List<Item> _containedItems;
+    [SerializeField] private List<ItemDataForInspector> _containedItems;
 
     public InventoryWithSlots Inventory { get; private set; }
-
-    private Item _item;
 
     private void Start()
     {
         Inventory = new InventoryWithSlots(10);
 
-        _item = Instantiate(_containedItems[0]);
-
-        foreach (var item in _containedItems)
-        {
-            AddItem(this, item);
-        }
-
-        Destroy(_item.gameObject);
+        foreach (ItemDataForInspector data in _containedItems)
+            AddItem(this, data.GetData());
 
         //Create UI
     }
 
-    public void AddItem(object sender, Item item)
+    public void AddItem(object sender, ItemData item)
     {
-        _item.SetInfo(item.Info as InventoryItemInfo);
-        _item.SetState(item.State as InventoryItemState);
-
-        Inventory.TryToAdd(this, _item.ItemData);
+        Inventory.TryToAdd(sender, item);
     }
 
     public void Interact()

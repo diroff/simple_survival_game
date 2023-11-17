@@ -3277,8 +3277,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containedItems:
-  - {fileID: -6206830474938398312, guid: 1e1f749d6e25f3f4f926eb623685109d, type: 3}
-  - {fileID: 8113121547727301595, guid: 5ecbada5fa0b06946a5b5eec5eb4a713, type: 3}
+  - _info: {fileID: 11400000, guid: ba8a38e2684252e428f99774db740b10, type: 2}
+    _state:
+      itemAmount: 10
+      isItemEquipped: 0
+  - _info: {fileID: 11400000, guid: 4ea57e01a5b038943b6a2b54f607c2fe, type: 2}
+    _state:
+      itemAmount: 2
+      isItemEquipped: 0
 --- !u!212 &1164598627
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4119,11 +4125,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 342569447294523425, guid: 1e1f749d6e25f3f4f926eb623685109d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.25
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 342569447294523425, guid: 1e1f749d6e25f3f4f926eb623685109d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.75
+      value: -0.75
       objectReference: {fileID: 0}
     - target: {fileID: 342569447294523425, guid: 1e1f749d6e25f3f4f926eb623685109d, type: 3}
       propertyPath: m_LocalPosition.z
